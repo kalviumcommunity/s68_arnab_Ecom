@@ -6,7 +6,7 @@ const viewproducts=async(req, res) => {
         if (products.length === 0) {
             return res.status(404).send("No products found");
         }
-        res.status(200).json(products);
+        res.status(201).json(products);
      
     }
     catch(err){
@@ -26,7 +26,7 @@ const addProduct= async(req, res) => {
            description: description,
            category: category,
            price: price,
-           description: description
+           stock: stock
          };
          await Productmodel.create(newProduct);
          res.status(201).send("Product added successfully");
@@ -41,8 +41,8 @@ const addProduct= async(req, res) => {
 const updateProduct=async(req, res) => {
     try{
    const { id } = req.params;
-   const { name, description, category, price, stock } = req.body;
-    if (!id || !name || !price || !description || !category || !stock) {
+   const { productname, description, category, price, stock } = req.body;
+    if (!id || !productname || !price || !description || !category || !stock) {
          return res.status(400).send("All fields are required");
     }
     const product = await Productmodel.findById(id);
@@ -50,13 +50,13 @@ const updateProduct=async(req, res) => {
         return res.status(404).send("Product not found");
     }
     await Productmodel.findByIdAndUpdate(id, {
-        productname: name,
+        productname: productname,
         description: description,
         category: category,
         price: price,
         stock: stock
     }, { new: true })
-    res.status(200).send("Product updated successfully");
+    res.status(201).send("Product updated successfully");
 }
     catch(err){
         console.error("Error in updateProduct:", err);
@@ -75,7 +75,7 @@ const deleteProduct=async(req, res) => {
             return res.status(404).send("Product not found");
         }
         await Productmodel.findByIdAndDelete(id);
-        res.status(200).send("Product deleted successfully");   
+        res.status(201).send("Product deleted successfully");   
     }
     catch(err){
         console.error("Error in deleteProduct:", err);
