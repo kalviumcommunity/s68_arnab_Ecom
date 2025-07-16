@@ -5,7 +5,7 @@ const Auth = require("../Middleware/Auth");
 const productroute = Router();
 
 productroute.get('/',viewproducts);
-productroute.post('/add',addProduct);
+productroute.post('/add',Auth,addProduct);
 productroute.put('/update/:id',Auth,updateProduct);
 productroute.delete('/delete/:id',Auth,deleteProduct);
 
